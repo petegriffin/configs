@@ -37,6 +37,33 @@
     disabled: false
     node: master
     display-name: 'LHG PlayReady - OpenEmbedded (morty)'
+    triggers:
+        - gerrit:
+            server-name: 'lhg-review.linaro.org'
+            override-votes: true
+            gerrit-build-successful-codereview-value: 1
+            gerrit-build-failed-codereview-value: -1
+            readable-message: true
+            successful-message: 'OE Build Sanity Check Successful'
+            start-message: 'OE Build Sanity Check Started'
+            failure-message: 'OE Build Sanity Check Failed'
+            trigger-for-unreviewed-patches: true
+            projects:
+                - project-compare-type: 'PLAIN'
+                  project-pattern: 'lhg/playready'
+                  branches:
+                    - branch-compare-type: 'PLAIN'
+                      branch-pattern: '3.3.4472'
+                - project-compare-type: 'PLAIN'
+                  project-pattern: 'optee-playready'
+                  branches:
+                    - branch-compare-type: 'PLAIN'
+                      branch-pattern: '3.3.4472'
+                - project-compare-type: 'PLAIN'
+                  project-pattern: 'lhg/meta-lhg-prop'
+                  branches:
+                    - branch-compare-type: 'PLAIN'
+                      branch-pattern: 'master'
     axes:
         - axis:
             type: user-defined
