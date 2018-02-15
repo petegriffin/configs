@@ -1,0 +1,37 @@
+- job:
+    name: trigger-lhg-oe-build-opencdm-sanity-check
+    project-type: freestyle
+    defaults: global
+    logrotate:
+        daysToKeep: 30
+        numToKeep: 30
+    properties:
+        - authorization:
+            anonymous:
+                - job-read
+    disabled: false
+    node: master
+    display-name: 'Trigger for LHG rpb-based opencdm sanity check'
+    scm:
+        - git:
+            url: https://github.com/linaro-home/open-content-decryption-module
+            refspec: +refs/pull/*:refs/remotes/origin/pr/*
+            name: origin
+            branches:
+                - ${sha1}
+            skip-tag: true
+            shallow-clone: true
+            wipe-workspace: true
+    triggers:
+        - github-pull-request:
+            github-hooks: true
+            permit-all: true
+            auth-id: 'GITHUB_TOKEN'
+    wrappers:
+        - timestamps
+
+wrappers:
+        - timestamps
+    builders:
+        - trigger-builds:
+            - project: 'lhg-oe-build'
